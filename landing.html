@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zeff</title>
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Montserrat -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    .font-montserrat {
+      font-family: 'Montserrat', sans-serif;
+    }
+  </style>
+
+  <!-- VanillaTilt -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.2/vanilla-tilt.min.js"></script>
+</head>
+
+<body class="min-h-screen flex items-center justify-center">
+   
+<video id="bgVideo" autoplay muted playsinline loop preload="none" src="bg_vid.mp4" class="fixed w-full h-full object-cover" playsinline></video>
+<button id="unmuteBtn" class="fixed bottom-6 right-6 bg-white/20 text-white px-4 py-2 rounded-lg backdrop-blur-3xl hover:bg-white/30 transition">
+  Aktifkan Suara
+</button>
+  <!-- CARD -->
+  <div 
+    class="tilt-card w-80 p-6 rounded-2xl bg-white/1 backdrop-blur-sm 
+           border border-white/20 shadow-2xl text-white font-montserrat
+           cursor-pointer select-none transition-all duration-300"
+    data-tilt
+    data-tilt-max="10"
+    data-tilt-speed="800"
+    data-tilt-perspective="2000"
+    data-tilt-scale="1.03"
+  >
+      <img src="00b5b48568a9e2f49fed5cab79863303.jpg" class="w-10 h-10 rounded-full mx-auto mb-4">
+
+      <h1 class="text-2xl font-bold text-center">ZeeFall</h1>
+      <p class="text-center text-gray-300">FrontEnd Dev</p>
+
+    <div class="flex justify-center">
+        <a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0.16 0 23.68 24"><path fill="currentColor" d="M5.164 0L.16 18.928L18.836 24L23.84 5.072Zm8.747 15.354l-5.219-1.417l1.399-5.29l5.22 1.418l-1.4 5.29z"></path></svg></a>
+    </div>
+  </div>
+
+  <script>
+    VanillaTilt.init(document.querySelector(".tilt-card"), {
+      max: 10,            // sudut tilt kecil → lebih smooth
+      speed: 800,         // gerakan lebih lembut
+      perspective: 2000,  // mengurangi distorsi 3D biar halus
+      scale: 1.03,        // sedikit membesar saat hover
+      glare: false,       // glare dimatikan
+    });
+
+    const video = document.getElementById('bgVideo');
+  const btn = document.getElementById('unmuteBtn');
+  btn.addEventListener('click', () => {
+    video.muted = false;
+    video.play().catch(()=>{}); // play() mungkin rejected, tapi klik ini seharusnya ok
+    btn.style.display = 'none';
+  });
+  </script>
+
+</body>
+</html>
