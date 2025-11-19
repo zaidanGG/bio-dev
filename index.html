@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Zeff</title>
   <!-- gunakan profil.jpg sebagai favicon -->
   <link rel="icon" href="profil.jpg" type="image/jpeg">
@@ -13,6 +13,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=BBH+Sans+Hegarty&display=swap" rel="stylesheet">
   <style>
+    html, body {
+      margin: 0;
+      padding: 0;}
+
     .font-montserrat {
       font-family: 'Montserrat', sans-serif;
     }
@@ -65,7 +69,7 @@
 
 <body class="min-h-screen flex items-center justify-center">
    <!-- VIDEO -->
-  <video id="bgVideo" autoplay muted playsinline loop preload="none" src="bg_vid.mp4" class="fixed w-full h-full object-cover z-[-2]" playsinline></video>
+  <video id="bgVideo" autoplay muted playsinline loop preload="none" src="bg_vid.mp4" class="fixed h-[100dvh] min-h-[100vh] w-full object-cover z-[-2]" playsinline></video>
 
   <!-- ENTER OVERLAY: tampil sebelum masuk, klik untuk mulai dengan suara -->
   <div id="enterOverlay" tabindex="0"
