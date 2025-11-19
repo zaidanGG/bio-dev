@@ -4,14 +4,58 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Zeff</title>
+  <!-- gunakan profil.jpg sebagai favicon -->
+  <link rel="icon" href="profil.jpg" type="image/jpeg">
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Font Montserrat -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=BBH+Sans+Hegarty&display=swap" rel="stylesheet">
   <style>
     .font-montserrat {
       font-family: 'Montserrat', sans-serif;
+    }
+    .font-bbh {
+      font-family: 'BBH Sans Hegarty', sans-serif;
+    }
+    /* icon hover: scale + glow */
+    .icon-btn svg {
+      transition: transform .18s cubic-bezier(.2,.9,.2,1), filter .18s cubic-bezier(.2,.9,.2,1);
+      transform-origin: center;
+      will-change: transform, filter;
+      filter: drop-shadow(0 0 0 rgba(0,0,0,0));
+    }
+    .icon-btn:hover svg,
+    .icon-btn:focus svg {
+      transform: scale(1.15);
+      filter: drop-shadow(0 10px 22px rgba(255,80,120,0.18)) saturate(1.05);
+    }
+    /* slightly stronger glow on active/pressed */
+    .icon-btn:active svg {
+      transform: scale(1.12);
+      filter: drop-shadow(0 12px 28px rgba(255,80,120,0.22)) saturate(1.08);
+    }
+    /* avatar + decorative border (gunakan morning_coffe.png sebagai border) */
+    .avatar-wrapper { position: relative; width: max-content; margin: 0 auto; }
+    .avatar-main { position: relative; z-index: 20; display: block; border-radius: 9999px; object-fit: cover; }
+    .avatar-border-img {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 30; /* naikkan z-index supaya border berada di atas avatar */
+      pointer-events: none;
+      /* sesuaikan ukuran border di bawah supaya mengelilingi avatar */
+      width: 140px;
+      height: 140px;
+      object-fit: contain;
+      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.45));
+    }
+    /* responsive kecil/mobil */
+    @media (max-width: 640px) {
+      .avatar-border-img { width: 112px; height: 112px; }
+      .avatar-main { width: 96px; height: 96px; }
     }
   </style>
 
@@ -20,49 +64,70 @@
 </head>
 
 <body class="min-h-screen flex items-center justify-center">
-   
-<video id="bgVideo" autoplay muted playsinline loop preload="none" src="bg_vid.mp4" class="fixed w-full h-full object-cover" playsinline></video>
-<button id="unmuteBtn" class="fixed bottom-6 right-6 bg-white/20 text-white px-4 py-2 rounded-lg backdrop-blur-3xl hover:bg-white/30 transition">
-  Aktifkan Suara
-</button>
+   <!-- VIDEO -->
+  <video id="bgVideo" autoplay muted playsinline loop preload="none" src="bg_vid.mp4" class="fixed w-full h-full object-cover z-[-2]" playsinline></video>
+
+  <!-- ENTER OVERLAY: tampil sebelum masuk, klik untuk mulai dengan suara -->
+  <div id="enterOverlay" tabindex="0"
+       class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm cursor-pointer transition-opacity duration-500">
+    <span class="text-white text-lg md:text-xl font-bbh">click to enter...</span>
+  </div>
+
   <!-- CARD -->
   <div 
-    class="tilt-card w-80 p-6 rounded-2xl bg-white/1 backdrop-blur-sm 
+    class="tilt-card w-[92%] max-w-3xl sm:w-11/12 md:w-3/5 lg:w-2/5 min-h-[24rem] md:min-h-[32rem] rounded-2xl bg-white/5 backdrop-blur-sm 
            border border-white/20 shadow-2xl text-white font-montserrat
            cursor-pointer select-none transition-all duration-300"
     data-tilt
     data-tilt-max="10"
     data-tilt-speed="800"
     data-tilt-perspective="2000"
-    data-tilt-scale="1.03"
-  >
-      <img src="00b5b48568a9e2f49fed5cab79863303.jpg" class="w-10 h-10 rounded-full mx-auto mb-4">
+    data-tilt-scale="1.03">
 
-      <h1 class="text-2xl font-bold text-center">ZeeFall</h1>
-      <p class="text-center text-gray-300">FrontEnd Dev</p>
+    <!-- IMG -->
+    <div class="relative">
+      <div class="w-full h-36 md:h-44 rounded-t-2xl overflow-hidden"
+           style="background-image:url('banner.jpg'); background-size: cover; background-position: center;"></div>
 
-    <div class="flex justify-center">
-        <a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0.16 0 23.68 24"><path fill="currentColor" d="M5.164 0L.16 18.928L18.836 24L23.84 5.072Zm8.747 15.354l-5.219-1.417l1.399-5.29l5.22 1.418l-1.4 5.29z"></path></svg></a>
+        <!-- avatar decorative -->
+        <div class="absolute left-1/2 transform -translate-x-1/2 -bottom-12">
+          <div class="avatar-wrapper">
+          <!-- gambar border dekoratif -->
+          <img src="morning_coffee.png" alt="border" class="avatar-border-img" aria-hidden="true">
+
+          <!-- gambar avatar utama -->
+          <img src="profil.jpg" alt="avatar" class="avatar-main w-28 h-28 md:w-32 md:h-32 rounded-full border-4 border-black/60">
+        </div>
+      </div>
     </div>
+
+    <h1 class="mt-16 md:mt-20 text-6xl font-bold text-center text-[#FFF8DE] font-bbh">ZeeFall</h1>
+    
+    <!-- area tetap untuk role + subtitle supaya tidak collapse ketika dikosongkan -->
+    <div class="profile-text-area flex flex-col items-center justify-center mt-2 min-h-[2rem]">
+      <p id="role" class="text-center text-white typewriter" data-text="Beginner at FrontEnd Dev"></p>
+      <p id="subtitle" class="text-center text-white typewriter" data-text="Commonly known as Jep"></p>
+    </div>
+    
+    <!-- icon row (tetap di posisi meskipun teks di atas hilang) -->
+    <div class="flex justify-center mt-[3rem] gap-6">
+        <a href="https://www.roblox.com/users/5050974383/profile" class="text-white icon-btn" aria-label="icon 1">
+          <svg class="w-10 h-10 md:w-12 md:h-12" xmlns="http://www.w3.org/2000/svg" viewBox="0.16 0 23.68 24"><path fill="currentColor" d="M5.164 0L.16 18.928L18.836 24L23.84 5.072Zm8.747 15.354l-5.219-1.417l1.399-5.29l5.22 1.418l-1.4 5.29z"></path></svg>
+        </a>
+        <a href="https://www.tiktok.com/@zeefall01" class="text-white icon-btn" aria-label="icon 2">
+          <svg class="w-10 h-10 md:w-12 md:h-12" xmlns="http://www.w3.org/2000/svg" viewBox="3.2 2 17.43 19.99"><path fill="currentColor" d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74a2.89 2.89 0 0 1 2.31-4.64a2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"></path></svg>
+        </a>
+        <a href="https://discord.com/users/1243070736260923419" class="text-white icon-btn" aria-label="icon 3">
+          <svg class="w-10 h-10 md:w-12 md:h-12" xmlns="http://www.w3.org/2000/svg" viewBox="1.96 4.26 20.03 15.53"><path fill="currentColor" d="M14.82 4.26a10.14 10.14 0 0 0-.53 1.1a14.66 14.66 0 0 0-4.58 0a10.14 10.14 0 0 0-.53-1.1a16 16 0 0 0-4.13 1.3a17.33 17.33 0 0 0-3 11.59a16.6 16.6 0 0 0 5.07 2.59A12.89 12.89 0 0 0 8.23 18a9.65 9.65 0 0 1-1.71-.83a3.39 3.39 0 0 0 .42-.33a11.66 11.66 0 0 0 10.12 0q.21.18.42.33a10.84 10.84 0 0 1-1.71.84a12.41 12.41 0 0 0 1.08 1.78a16.44 16.44 0 0 0 5.06-2.59a17.22 17.22 0 0 0-3-11.59a16.09 16.09 0 0 0-4.09-1.35zM8.68 14.81a1.94 1.94 0 0 1-1.8-2a1.93 1.93 0 0 1 1.8-2a1.93 1.93 0 0 1 1.8 2a1.93 1.93 0 0 1-1.8 2zm6.64 0a1.94 1.94 0 0 1-1.8-2a1.93 1.93 0 0 1 1.8-2a1.92 1.92 0 0 1 1.8 2a1.92 1.92 0 0 1-1.8 2z"></path></svg>
+        </a>
+     </div>
   </div>
 
-  <script>
-    VanillaTilt.init(document.querySelector(".tilt-card"), {
-      max: 10,            // sudut tilt kecil → lebih smooth
-      speed: 800,         // gerakan lebih lembut
-      perspective: 2000,  // mengurangi distorsi 3D biar halus
-      scale: 1.03,        // sedikit membesar saat hover
-      glare: false,       // glare dimatikan
-    });
+  <!-- STARS -->
+  <canvas id="stars" class="fixed object-cover top-0 bottom-0 z-[-1]"></canvas>
 
-    const video = document.getElementById('bgVideo');
-  const btn = document.getElementById('unmuteBtn');
-  btn.addEventListener('click', () => {
-    video.muted = false;
-    video.play().catch(()=>{}); // play() mungkin rejected, tapi klik ini seharusnya ok
-    btn.style.display = 'none';
-  });
-  </script>
-
-</body>
-</html>
+  <!-- tombol unmute dihilangkan; menggunakan overlay sebagai gesture -->
+   <!-- semua script dipindahkan ke script.js -->
+   <script src="script.js"></script>
+ </body>
+ </html>
